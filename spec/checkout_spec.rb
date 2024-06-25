@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 require 'rspec'
-require_relative '../lib/checkout'
-require_relative '../lib/product'
+require_relative '../lib/cashier'
 
 RSpec.describe Checkout do
   let(:green_tea) { Product.new('GR1', 'Green tea', 3.11) }
   let(:strawberries) { Product.new('SR1', 'Strawberries', 5.00) }
   let(:coffee) { Product.new('CF1', 'Coffee', 11.23) }
+  let(:pricing_rules) { Cashier::DEFAULT_PRICING_RULES }
 
-  subject(:checkout) { described_class.new }
+  subject(:checkout) { described_class.new(pricing_rules) }
 
   describe 'Basket: GR1, SR1, GR1, GR1, CF1' do
     it 'returns a total of £22.45' do
