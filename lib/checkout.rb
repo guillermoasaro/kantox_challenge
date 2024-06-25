@@ -14,4 +14,8 @@ class Checkout
     @pricing_rules.each { |rule| rule.apply(@items) }
     @items.sum(&:price).round(2)
   end
+
+  def basket
+    @items.map(&:code)
+  end
 end

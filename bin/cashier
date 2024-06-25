@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../lib/cashier'
+
+loop do
+  checkout = Checkout.new(Cashier::DEFAULT_PRICING_RULES)
+  Cashier.print_products
+  puts "Starting a new checkout. Enter 'done' when finished."
+
+  loop do
+    print "Enter product code (or 'done' to finish): "
+    code = gets.chomp
+
+    break if code.downcase == 'done'
+
+    code.upcase!
+    unless (product = Cashier::DEFAULT_PRODUCTS[code.to_sym])
+      puts 'Product not found, try again...'
+      next
+    end
+
+    checkout.scan(Product.new(code, product[:name], product[:price]))
+    puts "Basket: #{checkout.basket.join(', ')}"
+    puts "Current total: £#{format('%.2f', checkout.total)}"
+  end
+
+  puts "Final total: £#{format('%.2f', checkout.total)}"
+  puts 'Thank you for shopping!'
+  print 'Would you like to process another checkout? (y/n): '
+  continue = gets.chomp
+  break unless continue.downcase == 'y'
+end
+
+puts 'Exiting cashier. Goodbye!'
